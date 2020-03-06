@@ -49,7 +49,7 @@ func init() {
 		return tablePrefix + defaultTableName
 	}
 
-	Db.SingularTable(true)
+	Db.SingularTable(true) //禁用表名复数
 	Db.LogMode(true)
 	Db.DB().SetMaxIdleConns(10)
 	Db.DB().SetMaxOpenConns(100)
