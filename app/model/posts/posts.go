@@ -1,16 +1,18 @@
 package posts
 
 import (
-	"github.com/jinzhu/gorm"
+	// "github.com/jinzhu/gorm"
 	"github.com/zhujp/vgin/app/model"
 )
 
 type Post struct {
-	gorm.Model
+	model.Model
 
 	Title string `json:"title"`
 	Body  string `json:"body"`
-	// CreatedAt int    `json:"created_at"`
+	Views int `json:"views;default:'0'"`
+	AuthorId int `json:"author_id;default:'0'"`
+	Status int `json:"status;default:'0'"`
 }
 
 func GetPosts(pageNum int, pageSize int, maps interface{}) (posts []Post) {
@@ -19,12 +21,22 @@ func GetPosts(pageNum int, pageSize int, maps interface{}) (posts []Post) {
 	return
 }
 
-func (post *Post) CreatePost() (id int, err error) {
-	// post.CreatedAt = int(time.Now().Unix())
-	err = model.Db.Create(&post).Error
+func (post *Post) CreatePost() error {
+	err := model.Db.Create(&post).Error
 	if err != nil {
-		return 0, err
+		return err
 	}
 
-	return 1, nil
+	return nil
+}
+
+func GetPost(id string) (*Post,error) {
+
+	post := new (Post)
+	err := model.Db.First(&post, id).Error
+	if err != nil {
+		return nil,err
+	}
+
+	return post,nil
 }

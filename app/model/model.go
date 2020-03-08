@@ -3,7 +3,7 @@ package model
 import (
 	"fmt"
 	"log"
-
+	"time"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 
@@ -12,10 +12,17 @@ import (
 
 var Db *gorm.DB
 
-// type Model struct {
-// 	// ID int `gorm:"primary_key" json:"id"`
-// 	CreatedAt int `json:"created_at"`
-// }
+type Model struct {
+	ID int `gorm:"primary_key;AUTO_INCREMENT" json:"id"`
+	CreatedAt string `json:"created_at"`
+	UpdatedAt string `json:"updated_at"`
+}
+
+func (model *Model) BeforeCreate(scope *gorm.Scope) error {
+	scope.SetColumn("created_at", time.Now().Format("2006-01-02 15:04:05"))
+	scope.SetColumn("updated_at", time.Now().Format("2006-01-02 15:04:05"))
+	return nil
+}
 
 func init() {
 	var (
@@ -49,7 +56,7 @@ func init() {
 		return tablePrefix + defaultTableName
 	}
 
-	Db.SingularTable(true) //禁用表名复数
+	// Db.SingularTable(true) //禁用表名复数
 	Db.LogMode(true)
 	Db.DB().SetMaxIdleConns(10)
 	Db.DB().SetMaxOpenConns(100)

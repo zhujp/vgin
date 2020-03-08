@@ -18,6 +18,8 @@ func main() {
 	{
 		// post_router.GET("/", post.Lists)
 		post_router.POST("/create", post.Create)
+		post_router.GET("/:id", post.Detail)
+		post_router.POST("/:id", post.Update)
 	}
 	r.Run(setting.HTTPPort) // listen and serve on 0.0.0.0:8080
 }
