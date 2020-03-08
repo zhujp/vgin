@@ -44,11 +44,23 @@ func Detail(c *gin.Context) {
 }
 
 
-func Upldate(c *gin.Context) {
+func Update(c *gin.Context) {
 	
 }
 
 
 func Delete(c *gin.Context) {
+	id := c.Param("id")
+	err := posts.DeletePost(id)
+	if err != nil {
+		c.JSON(0, gin.H{
+			"error": err.Error(),
+			"message":"删除失败",
+		})
+		return
+	}
 
+	c.JSON(200, gin.H{
+		"message": "成功",
+	})
 }

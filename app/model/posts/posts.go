@@ -40,3 +40,21 @@ func GetPost(id string) (*Post,error) {
 
 	return post,nil
 }
+
+
+func DeletePost(id string) error {
+	post := new (Post)
+	err := model.Db.First(&post,id).Error
+
+	if err != nil {
+		return err
+	}
+
+	err = model.Db.Delete(&post).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}
