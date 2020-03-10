@@ -3,6 +3,7 @@ package post
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/zhujp/vgin/app/model/posts"
+	"github.com/zhujp/vgin/app/util/response"
 )
 
 // func Lists() {
@@ -20,47 +21,34 @@ func Create(c *gin.Context) {
 	if err != nil {
 		msg = err.Error()
 	}
-	c.JSON(200, gin.H{
-		"message": msg,
-	})
-}
 
+	response.Response(c, 1, msg, nil, "")
+}
 
 func Detail(c *gin.Context) {
 	id := c.Param("id")
-	post,err := posts.GetPost(id)
+	post, err := posts.GetPost(id)
 
 	if err != nil {
-		c.JSON(0, gin.H{
-			"message": err.Error(),
-		})
+		response.Response(c, 0, "数据获取失败", nil, err.Error())
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"data":post,
-		"message": "成功",
-	})
+	response.Response(c, 1, "", post, "")
 }
-
 
 func Update(c *gin.Context) {
-	
-}
 
+}
 
 func Delete(c *gin.Context) {
 	id := c.Param("id")
 	err := posts.DeletePost(id)
 	if err != nil {
-		c.JSON(0, gin.H{
-			"error": err.Error(),
-			"message":"删除失败",
-		})
+		response.Response(c, 0, "删除失败", nil, err.Error())
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"message": "成功",
-	})
+	response.Response(c, 1, "删除成功", nil, "")
+
 }
