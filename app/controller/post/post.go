@@ -6,6 +6,11 @@ import (
 	"github.com/zhujp/vgin/app/util/response"
 )
 
+type Request struct {
+	Title string `form:"title" json:"title" xml:"title" binding:"required"`
+	Body  string `form:"body" json:"body" xml:"body" binding:"required"`
+}
+
 // func Lists() {
 // 	posts.GetPosts()
 // }
@@ -38,6 +43,26 @@ func Detail(c *gin.Context) {
 }
 
 func Update(c *gin.Context) {
+	var request Request
+	//json  {"title":"vilay is handsome","body":"vilay"}
+	// if err := c.ShouldBindJSON(&request); err != nil {
+	// 	response.Response(c, 0, "数据错误", nil, err.Error())
+	// 	return
+	// }
+
+	//xml  <?xml version="1.0" encoding="UTF-8"?><root><title>user</title>	<body>123</body>	</root>
+	// if err := c.ShouldBindXML(&request); err != nil {
+	// 	response.Response(c, 0, "数据错误", nil, err.Error())
+	// 	return
+	// }
+
+	//form
+	if err := c.ShouldBind(&request); err != nil {
+		response.Response(c, 0, "数据错误", nil, err.Error())
+		return
+	}
+
+	response.Response(c, 1, "修改成功", request, "")
 
 }
 
