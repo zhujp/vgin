@@ -16,7 +16,7 @@ func main() {
 	// })
 	post_router := r.Group("/post")
 	{
-		// post_router.GET("/", post.Lists)
+		post_router.GET("/", post.Lists)
 		post_router.POST("/create", post.Create)
 		post_router.GET("/:id", post.Detail)
 		post_router.PUT("/:id", post.Update)

@@ -2,6 +2,7 @@ package post
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/zhujp/vgin/app/model"
 	"github.com/zhujp/vgin/app/model/posts"
 	"github.com/zhujp/vgin/app/util/response"
 )
@@ -11,9 +12,12 @@ type Request struct {
 	Body  string `form:"body" json:"body" xml:"body" binding:"required"`
 }
 
-// func Lists() {
-// 	posts.GetPosts()
-// }
+func Lists(c *gin.Context) {
+	var page model.Page
+	_ = c.ShouldBindJSON(&page)
+	lists := posts.GetPosts(page, nil)
+	response.Response(c, 1, "", lists, "")
+}
 
 func Create(c *gin.Context) {
 	title := c.PostForm("title") //接收post数据

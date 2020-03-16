@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"time"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 
@@ -12,10 +13,17 @@ import (
 
 var Db *gorm.DB
 
+var PerPage = 10
+
 type Model struct {
-	ID int `gorm:"primary_key;AUTO_INCREMENT" json:"id"`
+	ID        int    `gorm:"primary_key;AUTO_INCREMENT" json:"id"`
 	CreatedAt string `json:"created_at"`
 	UpdatedAt string `json:"updated_at"`
+}
+
+type Page struct {
+	Page    int `json:"page"`
+	PerPage int `json:"per-page"`
 }
 
 func (model *Model) BeforeCreate(scope *gorm.Scope) error {
